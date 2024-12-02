@@ -1,4 +1,4 @@
-export const getDistanceBetweenLists = (input: string) => {
+const getLists = (input: string) => {
   const lines = input.split('\n');
 
   // Get left and right lists
@@ -12,6 +12,12 @@ export const getDistanceBetweenLists = (input: string) => {
     { left: [] as string[], right: [] as string[] },
   );
 
+  return lists;
+};
+
+export const getDistanceBetweenLists = (input: string) => {
+  const lists = getLists(input);
+
   // sort left and right lists ASC
   const sorted = { left: lists.left.sort(), right: lists.right.sort() };
 
@@ -22,4 +28,17 @@ export const getDistanceBetweenLists = (input: string) => {
   }, 0);
 
   return distance;
+};
+
+export const calculateSimilarityScore = (input: string) => {
+  const lists = getLists(input);
+
+  // for each item in the left list check how often it appears in the right list
+  // and create a sum total of the score
+  const result = lists.left.reduce((acc, left) => {
+    const count = lists.right.filter((right) => right === left).length;
+    return acc + count * parseInt(left);
+  }, 0);
+
+  return result;
 };
