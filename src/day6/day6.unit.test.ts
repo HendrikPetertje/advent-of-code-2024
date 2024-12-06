@@ -37,17 +37,17 @@ describe('Day 6', () => {
   });
 
   describe('Possible guard loops', () => {
-    it('should pass a dummy test', () => {
-      const result = getPossibleLoops(testInput);
+    it('should pass a dummy test', async () => {
+      const result = await getPossibleLoops(testInput);
 
       expect(result).toEqual(6);
     });
 
     // Skipped because it takes > 2 minutes
-    it.skip('should pass the real test', () => {
+    it.skip('should pass the real test', async () => {
       const input = getRealInput();
 
-      const result = getPossibleLoops(input);
+      const result = await getPossibleLoops(input);
 
       expect(result).toEqual(1753);
     });

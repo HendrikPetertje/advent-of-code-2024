@@ -1,3 +1,4 @@
+import { isMainThread, parentPort, Worker, workerData } from 'worker_threads';
 import { navigateSecurity } from './navigateSecurity';
 
 const prepareInput = (input: string) => {
@@ -34,7 +35,7 @@ export const getDistinctPaths = (input: string) => {
   return visitedCount;
 };
 
-export const getPossibleLoops = (input: string) => {
+export const getPossibleLoops = async (input: string) => {
   const { lines, current, width, height } = prepareInput(input);
 
   const initialCurrentClone = structuredClone(current);
@@ -49,16 +50,34 @@ export const getPossibleLoops = (input: string) => {
     });
   });
 
-  // console.log(visited.length);
+  // run in batches of 100
+  const now = Date.now();
+  const batchSize = 30;
+  const results: boolean[] = [];
 
-  let loopCount = 0;
+  for (let i = 0; i < visited.length; i += batchSize) {
+    const batch = visited.slice(i, i + batchSize);
 
-  visited.forEach(({ x, y }) => {
-    const { stuckInLoop } = navigateSecurity(current, lines, height, width, { x, y });
-    if (stuckInLoop) loopCount += 1;
+    const runs: boolean[] = await Promise.all(
+      batch.map(
+        ({ x, y }) =>
+          new Promise((resolve, reject) => {
+            const worker = new Worker('./src/day6/navigateSecurityWorker.js', {
+              workerData: { current, lines, height, width, newObstacle: { x, y } },
+            });
 
-    // console.log('new', i, ' of ', visited.length, loopCount);
-  });
+            worker.on('message', (result) => {
+              resolve(result.stuckInLoop as boolean);
+            });
 
-  return loopCount;
+            worker.on('error', reject);
+          }),
+      ),
+    );
+
+    console.log('batch done ', i, 'of', visited.length, 'after', (Date.now() - now) / 1000);
+    results.push(...runs);
+  }
+
+  return results.filter((run) => run).length;
 };
