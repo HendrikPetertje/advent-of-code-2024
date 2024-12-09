@@ -2,7 +2,7 @@
   "name": "advent-2024",
   "private": true,
   "version": "0.0.0",
-  "target": "ES2020",
+  "target": "ES2023",
   "lib": [
     "ES2020"
   ],
