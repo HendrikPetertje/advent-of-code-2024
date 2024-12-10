@@ -33,7 +33,7 @@ const getStartPositions = (map: Map) => {
 };
 
 const traverseTrail = (map: Map, trail: Trail, maxY: number, maxX: number): Trail[] => {
-  const { x, y, z } = trail.current.at(-1);
+  const { x, y, z } = trail.current.at(-1)!;
 
   // If we are stuck in a loop, return []
   if (
