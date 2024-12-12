@@ -1,9 +1,19 @@
 type X = number;
 type Y = number;
+
+/**
+ * ur: upper right
+ * dr: down right
+ * dl: down left
+ * ul: upper left
+ */
+type CornerPos = 'ur' | 'dr' | 'dl' | 'ul';
 /**
  * X and Y position of the region that is the top left of the corner
+ * C is the position of the corner relative to the region
+ *
  */
-type CornerRecord = Record<`${X}.${Y}`, true>;
+type CornerRecord = Record<`${X}.${Y}.${CornerPos}`, true>;
 
 const createMap = (input: string) => {
   return input
@@ -27,52 +37,34 @@ const cornerCheck = (map: string[][], x: X, y: Y, corners: CornerRecord) => {
 
   // base corners
   if (fenceUp && fenceRight) {
-    corners[`${x}.${y - 1}`] = true;
+    corners[`${x}.${y - 1}.ur`] = true;
   }
   if (fenceRight && fenceDown) {
-    corners[`${x}.${y}`] = true;
+    corners[`${x}.${y}.dr`] = true;
   }
   if (fenceDown && fenceLeft) {
-    corners[`${x - 1}.${y}`] = true;
+    corners[`${x - 1}.${y}.dl`] = true;
   }
   if (fenceLeft && fenceUp) {
-    corners[`${x - 1}.${y - 1}`] = true;
+    corners[`${x - 1}.${y - 1}.ul`] = true;
   }
 
   // inside corners
   // up right
   if (fenceUp && !fenceRight && !unmatchingUpRight) {
-    corners[`${x}.${y - 1}`] = true;
+    corners[`${x}.${y - 1}.ur`] = true;
   }
   // down right
   if (fenceRight && !fenceDown && !unmatchingDownRight) {
-    corners[`${x}.${y}`] = true;
+    corners[`${x}.${y}.dr`] = true;
   }
   // down left
   if (fenceDown && !fenceLeft && !unmatchingDownLeft) {
-    corners[`${x - 1}.${y}`] = true;
+    corners[`${x - 1}.${y}.dl`] = true;
   }
   // up left
   if (fenceLeft && !fenceUp && !unmatchingUpLeft) {
-    corners[`${x - 1}.${y - 1}`] = true;
-  }
-
-  // inside corners mirrored
-  // right up
-  if (fenceRight && !fenceUp && !unmatchingUpRight) {
-    corners[`${x}.${y - 1}`] = true;
-  }
-  // right down
-  if (fenceDown && !fenceRight && !unmatchingDownRight) {
-    corners[`${x}.${y}`] = true;
-  }
-  // left down
-  if (fenceLeft && !fenceDown && !unmatchingDownLeft) {
-    corners[`${x - 1}.${y}`] = true;
-  }
-  // left up
-  if (fenceUp && !fenceLeft && !unmatchingUpLeft) {
-    corners[`${x - 1}.${y - 1}`] = true;
+    corners[`${x - 1}.${y - 1}.ul`] = true;
   }
 
   return corners;
@@ -182,6 +174,7 @@ export const getFencePricesOnDiscount = (input: string) => {
 
       const regionsCount = Object.keys(coordinates).length;
       const cornersCount = Object.keys(corners).length;
+      console.log(corners);
 
       const newPrice = regionsCount * cornersCount;
       price = price + newPrice;
