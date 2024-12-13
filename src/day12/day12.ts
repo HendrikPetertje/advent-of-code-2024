@@ -174,7 +174,6 @@ export const getFencePricesOnDiscount = (input: string) => {
 
       const regionsCount = Object.keys(coordinates).length;
       const cornersCount = Object.keys(corners).length;
-      console.log(corners);
 
       const newPrice = regionsCount * cornersCount;
       price = price + newPrice;

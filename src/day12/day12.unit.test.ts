@@ -59,7 +59,7 @@ describe('Day 12 - Garden groups', () => {
 
       const result = getFencePricesOnDiscount(input);
 
-      expect(result).toEqual(858913); // Wrong number, too low
+      expect(result).toEqual(862486);
     });
   });
 });
