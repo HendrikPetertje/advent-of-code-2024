@@ -10,7 +10,6 @@
     "vitest/globals"
   ],
   "module": "ESNext",
-  "moduleResolution": "bundler",
   "scripts": {
     "test": "vitest",
     "build": "tsc && vite build",
