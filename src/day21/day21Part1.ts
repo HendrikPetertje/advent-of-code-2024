@@ -175,7 +175,6 @@ export const getKeyPressComplexityPart1 = (input: string) => {
     const filtered = action.filter((act) => act !== 'A');
     const number = parseInt(filtered.join(''));
 
-    console.log(action, length, number);
     return length * number;
   });
 

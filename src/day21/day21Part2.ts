@@ -161,9 +161,8 @@ const solveNumeric = (input: string[]) => {
 const CACHE = new Map<`${string}-${number}`, bigint>();
 
 const solveArrowic = (input: string, level = 0): bigint => {
-  if (level === 20) {
+  if (level === 25) {
     const finalLength = BigInt(input.length);
-    console.log(level, finalLength);
     return finalLength;
   }
 
@@ -195,7 +194,6 @@ const solveArrowic = (input: string, level = 0): bigint => {
   });
 
   const totalLength = length.reduce((acc, val) => acc + val, BigInt(0));
-  console.log(level, totalLength);
 
   CACHE.set(`${input}-${level}`, totalLength);
   return totalLength;
